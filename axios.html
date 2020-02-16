@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Teste vuesjs</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        
+    </head>
+    <body>
+
+        <div id="app">
+            <button @click.stop.prevent="getUsers()" class="btn btn-primary">teste</button>
+
+            <div v-if="response.status === 'error' " class="alert alert-danger">{{ response.msg }}</div>
+
+            <div v-if="loader.users" class="">Carregando</div>
+            <ul>
+              <li v-for="user in users">
+                {{ user.name }}
+              </li>
+            </ul>
+        </div>
+
+       
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+
+            var mixin = {
+              methods: {
+                getUsers(){
+
+                  this.loader.users = true;
+                  
+                  //rotina de programação
+                  //localizar usuarios
+
+                  const url = 'http://jsonplaceholder.typicode.com/users';
+                  const vm = this;
+                  axios.get(url).then(function(response) {
+
+                    vm.users = response.data;
+                    const { name } = vm.users[0];
+
+                    vm.loader.users = false;
+                    console.log(name);
+                  });
+
+                }
+              }
+            }
+
+            //var eventBus = new Vue();
+            Vue.prototype.$eventHub = new Vue();
+
+            var app = new Vue({
+                el: "#app",
+                
+                mixins: [mixin],
+
+                data: {
+                    titulo: "Vuejs do jeito ninja",
+                    users: [],
+                    loader: {
+                      users:false,
+                    },
+                    response: {
+                      msg: "Página não encontrada",
+                      status: ""
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Teste vuesjs</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        <style>
+          .fade-enter-active, .fade-leave-active{
+            transition: opacity .5s;
+          }
+
+          .fade-enter, .fade-leave-to{
+            opacity: 0;
+          }
+        </style>
+    </head>
+    <body>
+
+        <div id="app">
+
+          <ul>
+            <li>
+              <router-link :to="{name: 'transformers'}">
+                Transformers
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{name: 'game-of-thrones'}">
+                Game of thrones
+              </router-link>
+            </li>
+          </ul>
+
+          <router-view>
+            
+          </router-view>
+
+
+        </div>
+
+        <template id="transformers">
+          <div>
+            <div class="row">
+              <div v-if="sidebar" class="col">
+                sidebar
+              </div>
+              <div class="col">
+                <ul ref="transformers"> 
+                  <li v-for="(transoform, index) in transformers" :key="transoform.name">
+                    <router-link :to="{name: 'transformersContent', params: {name: transoform.slug}}">
+                      {{transoform.name }}
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+              <div class="col">
+                <router-view></router-view>
+              </div>
+            </div>
+            <h4>Transformers</h4>
+            
+          </div>
+        </template>
+
+        <template id="game-of-thrones">
+          <div>
+            <h4>Game of thrones</h4>
+            <ul ref="thrones"> 
+              <li v-for="(thrones, index) in gameOfThrones" :key="thrones.name">
+                {{ thrones.name }}  
+                <a @click.stop.prevent="remove(index)"> X</a>
+              </li>
+            </ul>
+          </div>
+        </template>
+
+        <template id="transformersContent">
+          <div>
+            <h3>Conteúdo transformers</h3>
+            {{ $route.params.name }}
+          </div>
+        </template>
+
+        <template id="error404">
+          <div>
+            <h1>error 404</h1>
+            <p>página não encontrada</p>
+          </div>
+        </template>
+
+       
+        <script src="https://unpkg.com/vue"></script>
+
+        <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+                
+        
+        <script>
+
+            const Transformers = Vue.component('transformers', {
+              template: "#transformers",
+              props: {
+                sidebar: String
+              },
+              created() {
+                console.log(this.sidebar );
+              },
+              data(){
+                return {
+                  transformers: [
+                    { name: 'adriano', slug: 'adriano' },
+                    { name: 'adriano2', slug: 'adriano2' },
+                  ],
+                  
+                }
+              },
+              methods: {
+                remove(index){
+                  this.transformers.splice(index, 1);
+                }
+              }
+            });
+
+            const GameOfThrones =  Vue.component('game-of-thrones', {
+              template: "#game-of-thrones",
+              data(){
+                return {
+                  gameOfThrones: [
+                    { name: 'adriano' },
+                    { name: 'adriano2' },
+                  ]
+                }
+              },
+              methods: {
+                remove(index){
+                  this.gameOfThrones.splice(index, 1);
+                }
+              }
+            });
+
+            const TransformersContent = Vue.component('transformers-content', {
+              template: '#transformersContent', 
+            })
+
+            const error404 = Vue.component('error404', {
+              template: '#error404'
+            });
+
+            const router = new VueRouter({
+              mode: 'history',
+              routes: [
+                {
+                  path: '/', name: 'home'
+                },
+                {
+                  path: '/transformers', name: 'transformers', component: Transformers, 
+                  props: { 
+                    sidebar: 'dark' 
+                  },
+                  children: [
+                    {
+                      path: ':name', name: 'transformersContent', component: TransformersContent
+                    }
+                  ]
+                },
+                {
+                  path: '/game-of-thrones', name: 'game-of-thrones', component: GameOfThrones
+                },
+                {
+                  path: "*", name: 'error404', component: error404
+                }
+              ]
+            });
+
+
+            var app = new Vue({
+                el: "#app",
+                router,
+                
+                //created(){
+                //  this.$router.push({
+                //    name: 'transformersContent', params: {name: //'adriano'}
+                //  });
+                //  
+                //},
+                
+                mounted(){
+                  console.log(this.$refs.users);
+                },
+                
+                data: {
+                    titulo: "Vuejs do jeito ninja",
+                    users: [
+                      { name: 'adriano' },
+                      { name: 'adriano2' },
+                    ],
+                    movie: 'game-of-thrones'
+                },
+                methods: {
+                  remove(index){
+                    this.users.splice(index, 1);
+                  }
+                }
+            });
+        </script>
+    </body>
+</html>

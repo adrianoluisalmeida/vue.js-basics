@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Teste vuesjs</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+
+        <div id="app">
+            <navbar></navbar>
+        </div>
+
+        <template id="nav">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <menu-bar :items="topNav" @emit-click="getLink" ></menu-bar>
+                </div>
+            </nav>
+        </template>
+        <template id="menu">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item" v-for="(item, index) in items">
+                    <a @click.stop.prevent="emitClick(index)" class="nav-link" href="#">{{item.label}}</a>
+                </li>
+                
+            </ul>
+        </template>
+
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+
+            Vue.component('navbar', {
+                template: "#nav",
+                data() {
+                    return {
+                        topNav: [{label: 'Home'}, {label: 'Link'}, {label: 'Disabled'}]
+                    }
+                },
+                methods: {
+                    getLink(index){
+                        alert(this.topNav[index].label);
+                    }
+                }
+            });
+
+            Vue.component('menu-bar', {
+                template: "#menu",
+                props: ['items'],
+                methods: {
+                    emitClick(index){
+                        this.$emit('emit-click', index);
+                    }
+                }
+            });
+
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    titulo: "Vuejs do jeito ninja"
+                    
+                }
+            });
+        </script>
+    </body>
+</html>

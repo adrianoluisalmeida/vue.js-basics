@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Teste vuesjs</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+
+        <div id="app">
+
+            
+            <component :is="movie"></component>
+
+            <ul ref="users"> 
+              <li v-for="(user, index) in users" :key="user.name">
+                {{ user.name }}  
+                <a @click.stop.prevent="remove(index)"> X</a>
+              </li>
+            </ul>
+        </div>
+
+        <template id="transformers">
+          <div>
+            <h4>Transformers</h4>
+            <ul ref="transformers"> 
+              <li v-for="(transoform, index) in transformers" :key="transoform.name">
+                {{ transoform.name }}  
+                <a @click.stop.prevent="remove(index)"> X</a>
+              </li>
+            </ul>
+          </div>
+        </template>
+
+       
+        <script src="https://unpkg.com/vue"></script>
+        
+        <script>
+
+            Vue.component('transformers', {
+              template: "#transformers",
+              data(){
+                return {
+                  transformers: [
+                    { name: 'adriano' },
+                    { name: 'adriano2' },
+                  ]
+                }
+              },
+              methods: {
+                remove(index){
+                  this.transformers.splice(index, 1);
+                }
+              }
+            });
+
+
+            var app = new Vue({
+                el: "#app",
+
+                mounted(){
+                  console.log(this.$refs.users);
+                },
+
+                data: {
+                    titulo: "Vuejs do jeito ninja",
+                    users: [
+                      { name: 'adriano' },
+                      { name: 'adriano2' },
+                    ],
+                    movie: 'transformers'
+                },
+                methods: {
+                  remove(index){
+                    this.users.splice(index, 1);
+                  }
+                }
+            });
+        </script>
+    </body>
+</html>

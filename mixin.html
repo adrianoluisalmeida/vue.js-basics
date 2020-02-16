@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Teste vuesjs</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+
+        <div id="app">
+            <button @click.stop.prevent="getUsers()" class="btn btn-primary">teste</button>
+        </div>
+
+       
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+
+           
+            var mixin = {
+                methods: {
+                    getUsers(){
+                        //rotina de programação
+                        //localizar usuarios
+                        console.log('get users');
+                    }
+                }
+            }
+
+            //var eventBus = new Vue();
+            Vue.prototype.$eventHub = new Vue();
+
+            var app = new Vue({
+                el: "#app",
+                
+                mixins: [mixin],
+
+                data: {
+                    titulo: "Vuejs do jeito ninja"
+                    
+                }
+            });
+        </script>
+    </body>
+</html>

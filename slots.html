@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div id="app">
+    <br><br><br>
+
+    <div class="container">
+      <card>
+        
+        <template slot="text">
+          <p class="card-text">some quick</p>
+          <p class="card-text">some quick</p>
+        </template>
+        <p class="card-title">Card title</p>
+        
+        <a slot="action" href="" class="btn btn-primary"> go somewhere</a>
+      </card>
+    </div>
+  </div>
+
+  <template id="card">
+    <div class="card">
+      <img src="" alt="">
+      <div class="card-block">
+        <h4 class="card-title">
+          card title
+        </h4>
+        <slot name="title"></slot>
+        <slot name="text"></slot>
+        <slot name="action"></slot>
+       
+
+
+      </div>
+    </div>
+  </template>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script>
+    Vue.component('card', {
+      template: '#card',
+      data(){
+        return {
+          title: ''
+        }
+      }
+    });
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        titulo: "Vuejs do jeito ninja"  
+      }
+    });
+  </script>
+</body>
+</html>
